@@ -41,10 +41,10 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.35, random
 #Train the system
 k=MultiOutputRegressor(GradientBoostingRegressor(random_state=0)).fit(X_train, y_train).predict(X_test)
 for i in range (0,270):
-    '''if(mean_absolute_error(y_test[i], k[i])>0.1):
+    if(mean_absolute_error(y_test[i], k[i])>0.1):
         print(y_test[i])
         print(k[i])
-    
+
     '''
     if(k[i][0]>50): print("happy")
     if(k[i][1]>50): print("sad")
@@ -55,3 +55,4 @@ for i in range (0,270):
     if(k[i][6]>50): print("interest")
     if(k[i][7]>50): print("boredom")
     if(k[i][8]>50): print("impatience")
+'''

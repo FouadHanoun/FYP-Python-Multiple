@@ -22,7 +22,7 @@ size=0
 
 for z in range(0,6):
     features.append([])
-    for j in range(0,9):
+    for j in range(0,8):
         features[z].append([])
     timestamp.append([])
     tt.append([])
@@ -33,15 +33,15 @@ for z in range(0,6):
 for line in file:
     if(":" not in line):
         line=line.split(" ")
-        for i in range(0,9):
+        for i in range(0,8):
             features[body][i].append(int(line[i]))
     else:
         line=line.split("-")
-        body=int(line[0])
+        body=int(line[0])-1
         time=line[1].split(":")
         timestamp[body].append(float(time[0])*3600+float(time[1])*60+float(time[2].strip('\n')))
 
-    
+
 
 for z in range(0,6):
     if(len(timestamp[z])==0):
@@ -49,17 +49,18 @@ for z in range(0,6):
     tt[z]=np.array(timestamp[z])
     x[z]=np.linspace(tt[z].min(),tt[z].max(),25)
     size+=1
-    
 
-    
+
+
 for j in range(0,size):
     plt.figure("body "+str(j))
-    for z in range(0,8):
-        T[j].append(np.array(features[j][z+1]))
-        p[j].append(spline(tt[j],T[j][z],x[j]))
-        plt.plot(x[j],p[j][z],label=emotions[z+1])
-    plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
     plt.ylim(ymax = 100, ymin = 0)
+    for z in range(0,8):
+        T[j].append(np.array(features[j][z]))
+        p[j].append(spline(tt[j],T[j][z],x[j]))
+        plt.plot(x[j],p[j][z],label=emotions[z])
+    plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
+    
         
 
 plt.show()

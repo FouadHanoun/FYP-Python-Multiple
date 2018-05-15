@@ -37,7 +37,7 @@ for line in file:
             features[body][i].append(int(line[i]))
     else:
         line=line.split("-")
-        body=int(line[0])-1
+        body=int(line[0])
         time=line[1].split(":")
         timestamp[body].append(float(time[0])*3600+float(time[1])*60+float(time[2].strip('\n')))
 

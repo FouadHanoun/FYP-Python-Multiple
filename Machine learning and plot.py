@@ -11,6 +11,43 @@ import matplotlib.pyplot as plt
 from scipy.interpolate import spline
 
 
+from sklearn import datasets, linear_model
+from sklearn.model_selection import cross_val_score, KFold
+from keras.models import Sequential
+from sklearn.metrics import accuracy_score
+from keras.layers import Dense
+from keras.wrappers.scikit_learn import KerasRegressor
+seed = 1
+
+
+def fill(p,n):
+    fx=open(n,'r')
+    x=[]
+    j=0
+    for l in fx:
+        x.append([])
+        l=l.split(" ")
+        for i in range (0,p):
+            x[j].append(float(l[i]))
+        j+=1
+    fx.close()
+    return x
+
+
+def baseline_model():
+    model = Sequential()
+    model.add(Dense(10, input_dim=10, activation='relu'))
+    model.add(Dense(1))
+    model.compile(loss='mean_squared_error', optimizer='adam')
+    return model
+
+
+#Fill the X features list form the X.txt file
+X=fill(19,"X.txt")
+
+#Fill the Y results from the Y.txt file
+y=fill(8,"Y.txt")
+
 emotions_list=["happiness","sadness","pride","guilt","defensive","interest","bored","impatience"]
 
 filename="plotting.txt"
@@ -37,45 +74,28 @@ for z in range(0,6):
     T.append([])
     p.append([])
 
-'''                                                   ----             FEATURES            ----
-
-
-HeadBackward HeadBentForward HeadOnHand_Left HeadOnHand_RightHandOnHead_Left HandOnHead_Right SpineForward SpineBackward ShouldersForward ShouldersRaisedArmsAtTrunk
-ArmsRaisedShoulder HandsOnKnees CrossedArms ArmsRaisedUp ArmsExtendedDown HandsBehindHead HandOnNeck_Left HandOnNeck_Right
-
-
-'''
-
-def fill(p,n):
-    fx=open(n,'r')
-    x=[]
-    j=0
-    for l in fx:
-        x.append([])
-        l=l.split(" ")
-        for i in range (0,p):
-            x[j].append(float(l[i]))
-        j+=1
-    fx.close()
-    return x
-
-
-
-#Fill the X features list form the X.txt file
-X=fill(19,"X.txt")
-
-#Fill the Y results from the Y.txt file
-y=fill(8,"Y.txt")
-
-#Train the system
-k=MultiOutputRegressor(GradientBoostingRegressor(random_state=0)).fit(X, y)
-
-                                 
+                         
 filename = 'C:\\Users\\fouad.hannoun\\AppData\\Local\\Packages\\a4548d07-af25-4b98-b7b4-ad4c4798fc82_q8p7fyft9r39a\\LocalState\\Test Folder\\sample.txt'
 file = open(filename,'r')
 features = []
 i=0
 features.append([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0])
+
+
+
+
+estimator = KerasRegressor(build_fn=baseline_model, nb_epoch=100, batch_size=100, verbose=False)
+kfold = KFold(n_splits=10, random_state=seed)
+results = cross_val_score(estimator, X, y, cv=kfold)
+print("Results: %.2f (%.2f) MSE" % (results.mean(), results.std()))
+
+estimator.fit(X, y)
+#accuracy_score(y, prediction)
+
+
+
+
+
 
 for line in file:
     if (":" not in line):
@@ -88,7 +108,7 @@ for line in file:
         timestamp[body].append(float(time[0])*3600+float(time[1])*60+float(time[2].strip('\n')))
     if (i==19):
         #Test the system
-        emotion=k.predict(features)
+        emotion=estimator.predict(features)
         cc=0
         for u in emotion:
             for em in u:
@@ -102,7 +122,7 @@ for z in range(0,6):
     if(len(timestamp[z])==0):
         break
     tt[z]=np.array(timestamp[z])
-    x[z]=np.linspace(tt[z].min(),tt[z].max(),25)
+    x[z]=np.linspace(tt[z].min(),tt[z].max(),50)
     size+=1
 
 

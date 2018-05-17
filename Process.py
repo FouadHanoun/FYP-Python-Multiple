@@ -58,6 +58,7 @@ filename = 'C:\\Users\\fouad.hannoun\\AppData\\Local\\Packages\\a4548d07-af25-4b
 
 emotions_list=["happiness","sadness","pride","guilt","defensive","interest","bored","impatience"]
 
+
 #realtime analysis
 while 1:
     f2=open("plotting.txt","a")
@@ -79,23 +80,21 @@ while 1:
             #Test the system
             emotion=k.predict(features)
             for u in emotion:
-                f2.write(str(max(0,int(u[0])))+" ")
-                f2.write(str(max(0,int(u[1])))+" ")
-                f2.write(str(max(0,int(u[2])))+" ")
-                f2.write(str(max(0,int(u[3])))+" ")
-                f2.write(str(max(0,int(u[4])))+" ")
-                f2.write(str(max(0,int(u[5])))+" ")
-                f2.write(str(max(0,int(u[6])))+" ")
-                f2.write(str(max(0,int(u[7])))+" ")
-                f2.write("\n")
-
-                for z in range(0,8):
-                    if(max(0,int(u[z]))>70):
+                if((u[0]<30) and (u[1]<30) and (u[2]<30) and (u[3]<30) and (u[4]<30) and (u[5]<30) and (u[6]<30) and (u[7]<30)):
                         f3=open(filename,'a')
-                        f3.write(body+" "+emotions_list[z])
-                        
-                f3.close()
-                time.sleep(0.01)
+                        f3.write(body+" "+"neutral ")
+                else:
+                    for z in range(0,8):
+                        if(max(0,int(u[z]))>70):
+                            f3=open(filename,'a')
+                            f3.write(body+" "+emotions_list[z]+" ")
+                    f3.close()
+                    time.sleep(0.02)
+                    
+                for z in range(0,8):
+                        f2.write(str(max(0,int(u[z])))+" ")
+                f2.write("\n")
+                
                 
             i=0
     f2.close()

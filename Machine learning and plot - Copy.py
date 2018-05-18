@@ -2,7 +2,7 @@ import time
 from sklearn.datasets import make_regression
 from sklearn.multioutput import MultiOutputRegressor
 from sklearn.ensemble import GradientBoostingRegressor
-from sklearn.metrics import mean_squared_error
+from sklearn.metrics import mean_absolute_error
 from sklearn.model_selection import train_test_split
 import os
 import numpy as np
@@ -17,7 +17,7 @@ from keras.models import Sequential
 from sklearn.metrics import accuracy_score
 from keras.layers import Dense
 from keras.wrappers.scikit_learn import KerasRegressor
-
+seed = 1
 
 
 def fill(p,n):
@@ -82,17 +82,19 @@ i=0
 features.append([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0])
 
 
-seed = 7
+
 estimator = KerasRegressor(build_fn=baseline_model, nb_epoch=100, batch_size=100, verbose=False)
-kfold = KFold(n_splits=10, random_state=seed)
+kfold = KFold(n_splits=19, random_state=seed)
 results = cross_val_score(estimator, np.array(X), np.array(y), cv=kfold)
 print("Results: %.2f (%.2f) MSE" % (results.mean(), results.std()))
 
 estimator.fit(np.array(X), np.array(y))
-prediction = estimator.predict(np.array(X))
-print(mean_squared_error((y), prediction))
+#accuracy_score(y, prediction)
 
-'''
+
+
+
+
 
 for line in file:
     if (":" not in line):
@@ -133,4 +135,3 @@ for j in range(0,size):
         
 
 plt.show()
-'''

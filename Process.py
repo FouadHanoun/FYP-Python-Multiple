@@ -83,13 +83,15 @@ while 1:
                 if((u[0]<30) and (u[1]<30) and (u[2]<30) and (u[3]<30) and (u[4]<30) and (u[5]<30) and (u[6]<30) and (u[7]<30)):
                         f3=open(filename,'a')
                         f3.write(body+" "+"neutral ")
+                        f3.close()
+                        time.sleep(0.02)
                 else:
                     for z in range(0,8):
                         if(max(0,int(u[z]))>70):
                             f3=open(filename,'a')
                             f3.write(body+" "+emotions_list[z]+" ")
-                    f3.close()
-                    time.sleep(0.02)
+                            f3.close()
+                            time.sleep(0.02)
                     
                 for z in range(0,8):
                         f2.write(str(max(0,int(u[z])))+" ")

@@ -61,8 +61,7 @@ emotions_list=["happiness","sadness","pride","guilt","defensive","interest","bor
 
 #realtime analysis
 while 1:
-    #f2=open("plotting.txt","a")
-    f3 = open(filename,'w+')
+    f2=open("plotting.txt","a")
     #f3.close()
     where = file.tell()
     line = file.readline()
@@ -74,29 +73,15 @@ while 1:
             features[0][i]=float(line.split(" ")[1].strip('\n'))
             i+=1
         else:
-            #f2.write(line)
+            f2.write(line)
             body=line.split("-")[0]
         if (i==19):
             #Test the system
             emotion=k.predict(features)
             for u in emotion:
-                if((u[0]<30) and (u[1]<30) and (u[2]<30) and (u[3]<30) and (u[4]<30) and (u[5]<30) and (u[6]<30) and (u[7]<30)):
-                        f3=open(filename,'a')
-                        f3.write(body+" "+"neutral ")
-                        f3.close()
-                        time.sleep(0.02)
-                else:
-                    for z in range(0,8):
-                        print(emotions_list[z],u[z],"%")
-                        if(max(0,int(u[z]))>70):
-                            f3=open(filename,'a')
-                            f3.write(body+" "+emotions_list[z]+" ")
-                            f3.close()
-                            time.sleep(0.05)
-                    
-                #for z in range(0,8):
-                 #       f2.write(str(max(0,int(u[z])))+" ")
-                #f2.write("\n")
+                for z in u:
+                    f2.write(str(int(z))+" ")
+                f2.write("\n")
                 
                 
             i=0

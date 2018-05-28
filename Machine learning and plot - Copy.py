@@ -84,7 +84,7 @@ features.append([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0])
 
 
 estimator = KerasRegressor(build_fn=baseline_model, nb_epoch=100, batch_size=100, verbose=False)
-kfold = KFold(n_splits=19, random_state=seed)
+kfold = KFold(n_splits=10, random_state=seed)
 results = cross_val_score(estimator, np.array(X), np.array(y), cv=kfold)
 print("Results: %.2f (%.2f) MSE" % (results.mean(), results.std()))
 

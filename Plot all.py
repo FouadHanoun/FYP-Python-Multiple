@@ -4,7 +4,7 @@ import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 from scipy.interpolate import spline
 
-emotions=["neutral","happiness","sadness","pride","guilt","defensive","interest","bored","impatience"]
+emotions=["happiness","sadness","pride","guilt","defensive","interest","bored","impatience"]
 
 filename="plotting.txt"
 file = open(filename,'r')
@@ -47,7 +47,7 @@ for z in range(0,6):
     if(len(timestamp[z])==0):
         break
     tt[z]=np.array(timestamp[z])
-    x[z]=np.linspace(tt[z].min(),tt[z].max(),25)
+    x[z]=np.linspace(tt[z].min(),tt[z].max(),20)
     size+=1
 
 

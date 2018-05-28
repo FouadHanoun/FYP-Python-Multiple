@@ -87,7 +87,6 @@ while 1:
                         time.sleep(0.02)
                 else:
                     for z in range(0,8):
-                        print(emotions_list[z],u[z],"%")
                         if(max(0,int(u[z]))>70):
                             f3=open(filename,'a')
                             f3.write(body+" "+emotions_list[z]+" ")
